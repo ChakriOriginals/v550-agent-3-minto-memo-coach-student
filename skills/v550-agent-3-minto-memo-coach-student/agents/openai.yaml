@@ -1,0 +1,4 @@
+interface:
+  display_name: "V550 Agent 3 Minto Memo Coach"
+  short_description: "Coach your own two-page Minto memo"
+  default_prompt: "Use $v550-agent-3-minto-memo-coach-student to coach me through my memo using my charter, WBS, and timeline."
