@@ -11,7 +11,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
 NAME = "v550-agent-3-minto-memo-coach-student"
-SOURCE = ROOT / "skills" / NAME
+SOURCE = ROOT / ".agents" / "skills" / NAME
 
 
 def main() -> int:

@@ -36,7 +36,7 @@ class PackageTests(unittest.TestCase):
             ):
                 self.assertEqual(
                     (installed / relative).read_bytes(),
-                    (ROOT / "skills" / NAME / relative).read_bytes(),
+                    (ROOT / ".agents" / "skills" / NAME / relative).read_bytes(),
                 )
             marker = installed / "student-note.txt"
             marker.write_text("keep me", encoding="utf-8")
@@ -47,7 +47,7 @@ class PackageTests(unittest.TestCase):
     def test_installer_rejects_extra_skill_code(self):
         with tempfile.TemporaryDirectory() as temporary:
             package = self.isolated_package(temporary)
-            skill = package / "skills" / NAME
+            skill = package / ".agents" / "skills" / NAME
             (skill / "tracking.py").write_text("print('unexpected code')\n", encoding="utf-8")
             home = Path(temporary) / "skills-home"
             env = os.environ.copy()
@@ -62,7 +62,7 @@ class PackageTests(unittest.TestCase):
     def test_installer_rejects_symlinked_reference(self):
         with tempfile.TemporaryDirectory() as temporary:
             package = self.isolated_package(temporary)
-            reference = package / "skills" / NAME / "references" / "course-context.md"
+            reference = package / ".agents" / "skills" / NAME / "references" / "course-context.md"
             outside = Path(temporary) / "outside.md"
             outside.write_text("external content", encoding="utf-8")
             reference.unlink()
@@ -80,7 +80,7 @@ class PackageTests(unittest.TestCase):
     def test_installer_rejects_missing_reference(self):
         with tempfile.TemporaryDirectory() as temporary:
             package = self.isolated_package(temporary)
-            (package / "skills" / NAME / "references" / "Minto_Reference_Sheet.md").unlink()
+            (package / ".agents" / "skills" / NAME / "references" / "Minto_Reference_Sheet.md").unlink()
             home = Path(temporary) / "skills-home"
             env = os.environ.copy()
             env["V550_SKILLS_HOME"] = str(home)
@@ -98,6 +98,21 @@ class PackageTests(unittest.TestCase):
             result = subprocess.run(["sh", str(ROOT / "start-v550.sh")], cwd=temporary, env=env, capture_output=True, text=True)
             self.assertEqual(result.returncode, 0, result.stderr)
             self.assertEqual(result.stdout, str(ROOT))
+
+    def test_cli_launcher_uses_read_only_and_disables_web_search(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            fake = Path(temporary) / "codex"
+            fake.write_text('#!/bin/sh\nprintf "%s\\n" "$@"\n', encoding="utf-8")
+            fake.chmod(0o755)
+            env = os.environ.copy()
+            env["V550_CODEX_CLI"] = str(fake)
+            result = subprocess.run(["sh", str(ROOT / "start-v550.sh"), "resume"], env=env, capture_output=True, text=True)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertEqual(result.stdout.splitlines(), ["--sandbox", "read-only", "-c", "web_search=disabled", "resume"])
+
+    def test_repository_contains_one_skill_copy(self):
+        self.assertTrue((ROOT / ".agents" / "skills" / NAME / "SKILL.md").is_file())
+        self.assertFalse((ROOT / "skills" / NAME).exists())
 
     def test_cli_launcher_rejects_missing_executable(self):
         with tempfile.TemporaryDirectory() as temporary:

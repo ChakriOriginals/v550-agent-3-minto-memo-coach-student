@@ -17,4 +17,4 @@ if [ ! -x "$codex_cli" ]; then
 fi
 
 cd "$package_dir"
-exec "$codex_cli" "$@"
+exec "$codex_cli" --sandbox read-only -c web_search=disabled "$@"

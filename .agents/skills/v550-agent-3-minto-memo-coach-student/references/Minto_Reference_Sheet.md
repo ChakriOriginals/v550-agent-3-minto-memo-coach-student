@@ -37,4 +37,17 @@ The Question should follow from the Complication. The Answer should resolve the 
 - **Inductive:** Several Key Arguments together support the Main Idea. This is usually the clearest starting point; a challenge to one reason need not undo the others.
 - **Deductive:** A connected sequence of premise, second premise, and conclusion. It can help bring a skeptical reader along step by step. Let the student choose whether it fits.
 
-For a short client memo, ask whether the opening gives the reader the answer, whether each paragraph supports it, whether claims have specific Evidence, and whether any process detail can be removed.
+## Five steps to apply it
+
+1. Define the question the reader needs answered.
+2. State the answer as the Main Idea.
+3. Group Key Arguments and check them for MECE.
+4. Gather Evidence for each argument.
+5. Review and refine Vertical and Horizontal Logic.
+
+## Quick checks for a client memo
+
+- Could the reader stop after the opening and know what action is requested?
+- Does each Key Argument support the Main Idea?
+- Is each important claim backed by specific Evidence?
+- Is anything included only because the team did the work?

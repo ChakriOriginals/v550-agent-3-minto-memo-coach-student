@@ -10,10 +10,10 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 NAME = "v550-agent-3-minto-memo-coach-student"
 FILES = {
-    ".gitignore", "README.md", "install.py", "start-v550.sh", "tools/verify_package.py",
-    f"skills/{NAME}/SKILL.md", f"skills/{NAME}/agents/openai.yaml",
-    f"skills/{NAME}/references/Minto_Reference_Sheet.md",
-    f"skills/{NAME}/references/course-context.md",
+    ".gitignore", "AGENTS.md", "README.md", "install.py", "start-v550.sh", "tools/verify_package.py",
+    f".agents/skills/{NAME}/SKILL.md", f".agents/skills/{NAME}/agents/openai.yaml",
+    f".agents/skills/{NAME}/references/Minto_Reference_Sheet.md",
+    f".agents/skills/{NAME}/references/course-context.md",
     "tests/test_package.py", "tests/conversation_checks.md", "tests/synthetic_materials.md",
 }
 ALLOWED_IMPORTS = {"__future__", "ast", "os", "pathlib", "shutil", "sys", "tempfile", "subprocess", "unittest"}
@@ -62,7 +62,7 @@ def main() -> int:
                 if fragment in content.lower() and path.name != "verify_package.py":
                     errors.append(f"Reporting or gate-related code fragment {fragment!r}: {relative}")
 
-    skill = ROOT / "skills" / NAME / "SKILL.md"
+    skill = ROOT / ".agents" / "skills" / NAME / "SKILL.md"
     if skill.is_file() and not skill.read_text(encoding="utf-8").startswith(f"---\nname: {NAME}\n"):
         errors.append("Skill frontmatter name does not match the install folder")
     if errors:
